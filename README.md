@@ -11,6 +11,7 @@
   - eslint-config-prettier
   - eslint-plugin-prettier
 - husky
+- lint-staged
 
 ## Process
 
@@ -170,9 +171,10 @@ With Eslint's addons we just installed we can configure it further:
 
 This single line of code will make `eslint-config-prettier` and `eslint-plugin-prettier` work nicely together. For more details read [config installation section](https://github.com/prettier/eslint-config-prettier#installation) and [plugin recommended setup](https://github.com/prettier/eslint-plugin-prettier#recommended-configuration)
 
-#### 4. Add and setup husky
+#### 4. Add and setup husky and lint-staged
 
 Use husky's [automatic](https://typicode.github.io/husky/#/?id=automatic-recommended) initialization
+
 ```bash
 npx husky-init && yarn
 ```
@@ -186,7 +188,21 @@ and change default `pre-commit` file:
  . "$(dirname "$0")/_/husky.sh"
 
 - npm test
-+ yarn lint
++ yarn run lint-staged
+```
+
+Install lint-staged
+
+```bash
+yarn add -D lint-staged
+```
+
+add `.lintstagedrc` config file
+
+```json
+{
+  "*.{js,jsx,ts,tsx}": "eslint --fix"
+}
 ```
 
 ## That's it 🎉
