@@ -1,15 +1,15 @@
 # Next.js 11 project setup
 
 ## General:
-> Updated at 📅: 02.07.2021
+> Updated at 📅: 03.07.2021
 
 ## Tooling included:
 - Typescript
 - Eslint (with Prettier)
-    - @typescript-eslint/eslint-plugin
-    - eslint-plugin-next
-    - eslint-config-prettier
-    - eslint-plugin-prettier
+  - @typescript-eslint/eslint-plugin
+  - eslint-plugin-next
+  - eslint-config-prettier
+  - eslint-plugin-prettier
 
 ## Process
 
@@ -19,20 +19,35 @@
 yarn create next-app --typescript
 ```
 
-This will come automaticaly with:
+This will come automatically with:
 
-```
-dependencies:
-- react
-- react-dom
-- next
+`package.json`
 
-devDependencies:
-- eslint
-- eslint-config-next
-- typescript
-- @types/react
+```json
+{
+  "name": "nextjs-setup",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "11.0.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "17.0.13",
+    "eslint": "7.29.0",
+    "eslint-config-next": "11.0.1",
+    "typescript": "4.3.5"
+  }
+}
 ```
+
 `.tsconfig.json`
 
 ```json
@@ -69,13 +84,6 @@ Optional: I like changing typescript's `strict` option to `true` from the get go
 {
   "extends": ["next", "next/core-web-vitals"]
 }
-```
-
-Optional: You could remove `next/core-web-vitals` if you don't care about it:
-
-```diff
-- "extends": ["next", "next/core-web-vitals"]
-+ "extends": ["next"]
 ```
 
 #### 2. Add Typescript plugin to Eslint config
@@ -116,7 +124,7 @@ Optional: I'm also adjusting rules to my liking at the start
 }
 ```
 
-3. Add Prettier to the mix
+#### 3. Add Prettier to the mix
 
 Install:
 ```bash
@@ -162,34 +170,3 @@ With Eslint's addons we just installed we can configure it further:
 This single line of code will make `eslint-config-prettier` and `eslint-plugin-prettier` work nicely together. For more details read [config installation section](https://github.com/prettier/eslint-config-prettier#installation) and [plugin recommended setup](https://github.com/prettier/eslint-plugin-prettier#recommended-configuration)
 
 ## That's it 🎉
-
-This is how `package.json` at the end:
-
-```json
-{
-  "name": "nextjs-setup",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "next": "11.0.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
-  },
-  "devDependencies": {
-    "@types/react": "17.0.13",
-    "@typescript-eslint/eslint-plugin": "^4.28.1",
-    "eslint": "7.29.0",
-    "eslint-config-next": "11.0.1",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "prettier": "^2.3.2",
-    "typescript": "4.3.5"
-  }
-}
-```
