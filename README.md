@@ -197,11 +197,12 @@ Install lint-staged
 yarn add -D lint-staged
 ```
 
-add `.lintstagedrc` config file
+add `.lintstagedrc.js` config file
 
-```json
-{
-  "*.{js,jsx,ts,tsx}": "eslint --fix"
+```javascript
+module.exports = {
+  '*.{js,jsx}': ['eslint --fix'],
+  '*.{ts,tsx}': [() => 'tsc', 'eslint --fix'],
 }
 ```
 
