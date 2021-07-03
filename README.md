@@ -1,34 +1,195 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js 11 project setup
 
-## Getting Started
+## General:
+> Updated at 📅: 02.07.2021
 
-First, run the development server:
+## Tooling included:
+- Typescript
+- Eslint (with Prettier)
+    - @typescript-eslint/eslint-plugin
+    - eslint-plugin-next
+    - eslint-config-prettier
+    - eslint-plugin-prettier
+
+## Process
+
+#### 1. Install Next.js 11, Typescript and basic Eslint config
 
 ```bash
-npm run dev
-# or
-yarn dev
+yarn create next-app --typescript
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This will come automaticaly with:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```
+dependencies:
+- react
+- react-dom
+- next
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.tsx`.
+devDependencies:
+- eslint
+- eslint-config-next
+- typescript
+- @types/react
+```
+`.tsconfig.json`
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```json
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
+```
 
-## Learn More
+Optional: I like changing typescript's `strict` option to `true` from the get go:
+```diff
+- "strict": false,
++ "strict": true,
+```
 
-To learn more about Next.js, take a look at the following resources:
+`.eslintrc:`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+{
+  "extends": ["next", "next/core-web-vitals"]
+}
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Optional: You could remove `next/core-web-vitals` if you don't care about it:
 
-## Deploy on Vercel
+```diff
+- "extends": ["next", "next/core-web-vitals"]
++ "extends": ["next"]
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### 2. Add Typescript plugin to Eslint config
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Install
+```
+yarn add -D @typescript-eslint/eslint-plugin
+```
+
+and add plugin in `.eslintrc`
+
+```diff
+{
++  "plugins": ["@typescript-eslint"],
+-  "extends": ["next"]
++  "extends": [
++    "plugin:@typescript-eslint/recommended",
++    "next"
++  ],
+}
+```
+
+Optional: I'm also adjusting rules to my liking at the start
+
+```
+{
+  "plugins": ["@typescript-eslint"],
+  "extends": ["next"]
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "next"
+  ],
++  "rules": {
++    "@typescript-eslint/no-unused-vars": "error",
++    "@typescript-eslint/no-explicit-any": "error",
++    "@typescript-eslint/explicit-module-boundary-types": "off"
++  }
+}
+```
+
+3. Add Prettier to the mix
+
+Install:
+```bash
+yarn add -D prettier eslint-config-prettier eslint-plugin-prettier
+```
+
+- `prettier` - code formatter
+- `eslint-config-prettier` - turns off Eslint's rules that might conflict with Prettier
+- `eslint-plugin-prettier` - reports Prettiers issues as Eslint errors 
+
+add basic Prettier configuration:
+`.prettierrc`
+```json
+{
+  "semi": false,
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "tabWidth": 2,
+  "useTabs": false
+}
+```
+
+With Eslint's addons we just installed we can configure it further:
+
+`.eslintrc`
+
+```diff
+{
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "next",
++    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
+  }
+}
+```
+
+This single line of code will make `eslint-config-prettier` and `eslint-plugin-prettier` work nicely together. For more details read [config installation section](https://github.com/prettier/eslint-config-prettier#installation) and [plugin recommended setup](https://github.com/prettier/eslint-plugin-prettier#recommended-configuration)
+
+## That's it 🎉
+
+This is how `package.json` at the end:
+
+```json
+{
+  "name": "nextjs-setup",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "11.0.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "17.0.13",
+    "@typescript-eslint/eslint-plugin": "^4.28.1",
+    "eslint": "7.29.0",
+    "eslint-config-next": "11.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.2",
+    "typescript": "4.3.5"
+  }
+}
+```
