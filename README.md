@@ -169,4 +169,77 @@ With Eslint's addons we just installed we can configure it further:
 
 This single line of code will make `eslint-config-prettier` and `eslint-plugin-prettier` work nicely together. For more details read [config installation section](https://github.com/prettier/eslint-config-prettier#installation) and [plugin recommended setup](https://github.com/prettier/eslint-plugin-prettier#recommended-configuration)
 
+### 4. Add Jest with @testing-library
+
+Install basic dependencies:
+
+```bash
+yarn add -D jest @types/jest babel-jest identity-obj-proxy @testing-library/react @testing-library/jest-dom @testing-library/dom @testing-library/user-event
+```
+
+This will add:
+
+- jest - testing framework
+- babel-jest - transform code with babel
+- identity-obj-proxy - makes css modules work
+- @testing-library - provides testing utilities that encourage good testing practices
+
+Add config files:
+
+`jest.config.js`
+
+```javascript
+module.exports = {
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
+  moduleNameMapper: {
+    '\\.(scss|sass|css)$': 'identity-obj-proxy',
+  },
+}
+```
+
+`.babelrc`
+
+```json
+{
+  "presets": ["next/babel"]
+}
+```
+
+`jest.setup.ts`
+
+```javascript
+import '@testing-library/jest-dom'
+```
+
+Add test scripts to `package.json`:
+
+```diff
+   "scripts": {
+     "dev": "next dev",
+     "build": "next build",
+     "start": "next start",
+     "lint": "next lint",
++    "test": "jest"
++    "test:watch": "jest --watch"
+ }
+```
+
+Now you can run your tests with:
+
+```bash
+yarn test
+```
+
+or in watch mode with:
+
+```bash
+yarn test:watch
+```
+
+#### ⚠️ Caveat:
+
+> You can't place your test files inside /pages, as server will try to create actual page out of it and build will break, however there are workarounds to this
+
 ## That's it 🎉
