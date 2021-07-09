@@ -1,5 +1,7 @@
 # Next.js 11 project setup
 
+> Check other branches for more tooling configs!
+
 ## General:
 > Updated at 📅: 03.07.2021
 
